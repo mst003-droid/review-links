@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>2학기 중간고사 복습(서술형으로 연습하기)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #eef1f5;
+    --ink: #1b2433;
+    --muted: #66728a;
+    --tile: #ffffff;
+    --line: #c9d1dd;
+    --accent: #2f5bea;
+    --done-bg: #1b2433;
+    --done-ink: #f2f5fa;
+    --focus: #2f5bea;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #12161d;
+      --ink: #e8ecf3;
+      --muted: #93a0b8;
+      --tile: #1b212b;
+      --line: #333c4a;
+      --accent: #7c9bff;
+      --done-bg: #e8ecf3;
+      --done-ink: #12161d;
+      --focus: #7c9bff;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #12161d;
+    --ink: #e8ecf3;
+    --muted: #93a0b8;
+    --tile: #1b212b;
+    --line: #333c4a;
+    --accent: #7c9bff;
+    --done-bg: #e8ecf3;
+    --done-ink: #12161d;
+    --focus: #7c9bff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 40px 20px 64px; }
+  header { margin-bottom: 28px; }
+  h1 {
+    margin: 0;
+    font-size: clamp(28px, 6vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .status { margin: 6px 0 0; color: var(--muted); font-size: 15px; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  @media (max-width: 620px) {
+    .grid { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .wrap { padding-top: 28px; }
+  }
+  .tile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    background: var(--tile);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: clamp(26px, 6vw, 40px);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    transition: border-color .15s, transform .15s;
+  }
+  .tile:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .tile:active { transform: translateY(0); }
+  .tile.done { background: var(--done-bg); border-color: var(--done-bg); color: var(--done-ink); }
+  .tile .check { position: absolute; top: 8px; right: 8px; width: 16px; height: 16px; }
+
+  .legend {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 14px; height: 14px; border-radius: 4px; border: 1px solid var(--line); background: var(--tile); }
+  .swatch.done { background: var(--done-bg); border-color: var(--done-bg); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile { transition: none; }
+    .tile:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>2학기 중간고사 복습(서술형으로 연습하기)</h1>
+    <p class="status" id="status">번호를 누르면 새 탭에서 문제가 열립니다.(게스트로 로그인하세요.)</p>
+  </header>
+
+  <ul class="grid" id="grid" aria-label="문제 목록"></ul>
+
+  <div class="legend" aria-hidden="true">
+    <span><i class="swatch"></i>아직 안 열어봄</span>
+    <span><i class="swatch done"></i>열어봄</span>
+  </div>
+</div>
+
+<script>
+  // 1번부터 20번까지 순서대로
+  const LINKS = [
+    "https://student.snorkl.app/v1rc47",
+    "https://student.snorkl.app/ac1b56",
+    "https://student.snorkl.app/bzu7cs",
+    "https://student.snorkl.app/e99y4r",
+    "https://student.snorkl.app/cwf2qv",
+    "https://student.snorkl.app/dfndqe",
+    "https://student.snorkl.app/22a1n7",
+    "https://student.snorkl.app/9eak9r",
+    "https://student.snorkl.app/gj75pk",
+    "https://student.snorkl.app/tkre9t",
+    "https://student.snorkl.app/gp2hqx",
+    "https://student.snorkl.app/qke46u",
+    "https://student.snorkl.app/3cxfbv",
+    "https://student.snorkl.app/rbf2jy",
+    "https://student.snorkl.app/n47vbp",
+    "https://student.snorkl.app/m1z43d",
+    "https://student.snorkl.app/mbva8x",
+    "https://student.snorkl.app/bgu14w",
+    "https://student.snorkl.app/w38ppd",
+    "https://student.snorkl.app/2bp6tq"
+  ];
+
+  const VISITED_KEY = "problem-visited-v1";
+  const grid = document.getElementById("grid");
+  const statusEl = document.getElementById("status");
+
+  function loadVisited() {
+    try {
+      const raw = localStorage.getItem(VISITED_KEY);
+      return new Set(raw ? JSON.parse(raw) : []);
+    } catch (e) { return new Set(); }
+  }
+  function saveVisited(set) {
+    try { localStorage.setItem(VISITED_KEY, JSON.stringify(Array.from(set))); } catch (e) {}
+  }
+
+  let visited = loadVisited();
+
+  const CHECK_SVG = '<svg class="check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 4.8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function render() {
+    grid.innerHTML = "";
+    LINKS.forEach((url, i) => {
+      const n = i + 1;
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.className = "tile" + (visited.has(n) ? " done" : "");
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.setAttribute("aria-label", n + "번 문제 열기" + (visited.has(n) ? " (열어봄)" : ""));
+      a.textContent = n;
+      if (visited.has(n)) a.insertAdjacentHTML("beforeend", CHECK_SVG);
+      a.addEventListener("click", () => {
+        visited.add(n);
+        saveVisited(visited);
+        setTimeout(render, 0);
+      });
+      li.appendChild(a);
+      grid.appendChild(li);
+    });
+    statusEl.textContent = "번호를 누르면 새 탭에서 문제가 열립니다.(게스트로 로그인하세요.) " + visited.size + " / " + LINKS.length + " 열어봄";
+  }
+
+  render();
+</script>
+</body>
+</html>
